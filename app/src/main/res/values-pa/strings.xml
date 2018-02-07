@@ -10,4 +10,10 @@
     <string name="Switch">ਇਹ ਕੀ ਕਰਦਾ ਹੈ?</string>
     <string name="RadioButton">ਰੇਡੀਓ ਬਟਨ </string>
     <string name="CheckBox">ਚੈੱਕ ਬਾਕਸ</string>
+    <string name="switchOn">ਸਵਿੱਚ ਚਾਲੂ ਹੈ</string> 
+    <string name="switchOff">ਸਵਿਚ ਬੰਦ ਹੈ</string>
+    <string name="ok">ਠੀਕ ਹੈ</string>
+    <string name="cancel">ਰੱਦ ਕਰੋ</string>
+    <string name="dialog_message">ਇਸ ਗਤੀਵਿਧੀ ਵਿੱਚੋਂ ਬਾਹਰ ਨਿਕਲੋ</string>
+
 </resources>
