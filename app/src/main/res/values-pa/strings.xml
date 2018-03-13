@@ -16,5 +16,6 @@
     <string name="button1">ਲਾਗਿਨ</string>
     <string name="cancel">ਰੱਦ ਕਰੋ</string>
     <string name="dialog_message">ਇਸ ਗਤੀਵਿਧੀ ਵਿੱਚੋਂ ਬਾਹਰ ਨਿਕਲੋ</string>
-
+    <string name="button2">ਗੱਲਬਾਤ ਸ਼ੁਰੂ ਕਰੋ</string>
+    <string name="button4">ਭੇਜੋ</string>
 </resources>

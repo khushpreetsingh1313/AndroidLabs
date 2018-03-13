@@ -24,4 +24,11 @@
         android:text="@string/ButtonText"
          />
 
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button2"
+        app:layout_constraintLeft_toRightOf="@id/button2" />
+
 </android.support.constraint.ConstraintLayout>

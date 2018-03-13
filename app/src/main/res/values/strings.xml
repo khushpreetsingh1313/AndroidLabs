@@ -14,7 +14,8 @@
     <string name="cancel">Cancel</string>
     <string name="switchOn">Switch is On</string> 
     <string name="switchOff">Switch is Off</string>
-
+    <string name="button2">Start Chat</string>
+    <string name="button4">Send</string>
 </resources>
 
 

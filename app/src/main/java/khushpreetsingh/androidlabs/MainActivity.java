@@ -28,6 +28,19 @@ public class MainActivity extends Activity {
                 startActivityForResult(secondIntent,50);
                 //Log.i(ACTIVITY_NAME, “Returned to MainActivity.onActivityResult”);
             }
+
+
+        });
+
+        Button btn = (Button)findViewById(R.id.button3);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent secondIntent = new Intent(MainActivity.this,
+                        ChatWindow.class);
+                startActivityForResult(secondIntent, 50);
+                //Log.i(ACTIVITY_NAME, “Returned to MainActivity.onActivityResult”);
+            }
         });
 
     }
