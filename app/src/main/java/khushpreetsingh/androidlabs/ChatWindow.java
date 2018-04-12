@@ -3,6 +3,7 @@ package khushpreetsingh.androidlabs;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,13 +25,16 @@ import static khushpreetsingh.androidlabs.ChatDatabaseHelper.TABLE_NAME;
 
 public class ChatWindow extends Activity {
 
+    Cursor cursor;
+    boolean tablet;
+
     ArrayList<String> list1 = new ArrayList<>();
     protected static final String ACTIVITY_NAME = "StartActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_window);
-
+        tablet = (findViewById(R.id.frame) != null);
         ChatDatabaseHelper myOpener = new ChatDatabaseHelper(this);
         SQLiteDatabase db = myOpener.getWritableDatabase();
 
@@ -38,43 +43,41 @@ public class ChatWindow extends Activity {
         ListView list = (ListView) findViewById(R.id.listView1);
         ChatAdapter messageAdapter = new ChatAdapter(this);
 
-        Cursor cursor= db.query(true, ChatDatabaseHelper.TABLE_NAME,
-                new String[] { ChatDatabaseHelper.KEY_ID, ChatDatabaseHelper.KEY_MESSAGE},
-                ChatDatabaseHelper.KEY_MESSAGE + " Not Null" , null, null, null, null, null);
-           cursor.moveToFirst();
+        cursor = db.query(true, ChatDatabaseHelper.TABLE_NAME,
+                new String[]{ChatDatabaseHelper.KEY_ID, ChatDatabaseHelper.KEY_MESSAGE},
+                ChatDatabaseHelper.KEY_MESSAGE + " Not Null", null, null, null, null, null);
+        cursor.moveToFirst();
 
-        while(!cursor.isAfterLast() ) {
+        while (!cursor.isAfterLast()) {
 
             list1.add(cursor.getString(cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE)));
             messageAdapter.notifyDataSetChanged(); //this restarts the process of getCount() & getView()
 
-           Log.i(ACTIVITY_NAME, "SQL MESSAGE:" + cursor.getString(cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE)));
+            Log.i(ACTIVITY_NAME, "SQL MESSAGE:" + cursor.getString(cursor.getColumnIndex(ChatDatabaseHelper.KEY_MESSAGE)));
             cursor.moveToNext();
 
 
-
         }
-        Log.i(ACTIVITY_NAME, "Cursor's  column count =" + cursor.getColumnCount() );
+        Log.i(ACTIVITY_NAME, "Cursor's  column count =" + cursor.getColumnCount());
 
         list.setAdapter(messageAdapter);
 
-        btn.setOnClickListener( (View e) -> {
+        btn.setOnClickListener((View e) -> {
                     list1.add(edt.getText().toString());
-            ContentValues newData = new ContentValues();
 
-            newData.put(ChatDatabaseHelper.KEY_MESSAGE, edt.getText().toString());
+                    ContentValues newData = new ContentValues();
 
-            db.insert(ChatDatabaseHelper.TABLE_NAME, null, newData);
+                    newData.put(ChatDatabaseHelper.KEY_MESSAGE, edt.getText().toString());
 
-            messageAdapter.notifyDataSetChanged(); //this restarts the process of getCount() & getView()
+                    db.insert(ChatDatabaseHelper.TABLE_NAME, null, newData);
+
+                    messageAdapter.notifyDataSetChanged(); //this restarts the process of getCount() & getView()
                     edt.setText("");
-
 
 
                 }
         );
-
-    }//
+    }
 
     private class ChatAdapter extends ArrayAdapter<String> {
 
@@ -90,6 +93,11 @@ public class ChatWindow extends Activity {
         public String getItem(int position) {
 
             return list1.get(position);
+        }
+        public long getItemId(int position) {
+            cursor.moveToPosition(position);
+            Long ID = Long.valueOf(cursor.getColumnIndex(ChatDatabaseHelper.KEY_ID));
+            return ID;
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -114,4 +122,6 @@ public class ChatWindow extends Activity {
         }
     }
 }
+
+
 

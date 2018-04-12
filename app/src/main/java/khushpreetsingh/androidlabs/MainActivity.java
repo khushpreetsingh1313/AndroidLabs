@@ -13,15 +13,17 @@ import android.widget.EditText;
 
 public class MainActivity extends Activity {
 
-
+Button buttonToolbar;
     protected static final String ACTIVITY_NAME = "StartActivity";
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button button2 = (Button)findViewById(R.id.button2);
+        buttonToolbar = findViewById(R.id.buttonToolbar);
+
         button2.setOnClickListener(new View.OnClickListener() {
-            @Override
+           @Override
             public void onClick(View v) {
                 Intent secondIntent = new Intent(MainActivity.this,
                         ListItemsActivity.class);
@@ -42,6 +44,20 @@ public class MainActivity extends Activity {
                 //Log.i(ACTIVITY_NAME, “Returned to MainActivity.onActivityResult”);
             }
         });
+
+        Button weather =(Button)findViewById(R.id.weather_app);
+
+        weather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent secondIntent = new Intent(MainActivity.this,WeatherForecast.class);
+                startActivityForResult(secondIntent,52);
+            }
+        });
+buttonToolbar.setOnClickListener(e->{
+    Intent intent = new Intent(MainActivity.this,TestToolbar.class);
+      startActivity(intent);
+});
 
     }
 
