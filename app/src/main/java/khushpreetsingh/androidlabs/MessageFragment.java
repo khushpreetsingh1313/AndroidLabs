@@ -1,46 +1,70 @@
 package khushpreetsingh.androidlabs;
 
+
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-/**
- * Created by khushpreetsingh on 2018-03-27.
- */
 
 public class MessageFragment extends Fragment {
-
-    private String mItem;
-        public void onCreate(Bundle b)
-        {
-            super.onCreate(b);
-            Bundle infoPassed = getArguments();
-
-           // userText = infoPassed.getString("UserInput");
-        }
-
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
-
-
-            // Show the dummy content as text in a TextView.
-
-
-
-
-            View gui = inflater.inflate(R.layout.activity_phone_fragment ,container, false);
-            TextView tv =(TextView) gui.findViewById(R.id.id_here);
-            TextView tv1 = (TextView) gui.findViewById(R.id.meassage_here);
-            Button btn = (Button) gui.findViewById(R.id.Delete_message_button);
-           // tv.setText("To:" + userText);
-            return gui;
-        }
+    TextView tv_message;
+    TextView tv_id;
+    Button delete_button;
+    SQLiteDatabase db;
+    ChatWindow cw;
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        cw = new ChatWindow();
+        db = ChatWindow.helper.getWritableDatabase();
     }
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View page;
+        page = inflater.inflate(R.layout.activity_phone_fragment, container, false);
+
+
+        tv_message = page.findViewById(R.id.message_here);
+        tv_id = page.findViewById(R.id.id_here);
+        delete_button = page.findViewById(R.id.Delete_message_button);
+
+        Bundle b = this.getArguments();
+
+
+        tv_message.setText(b.getString("message"));
+        Log.i("Message selected",b.getString("message") );
+        tv_id.setText(b.getString("id"));
+        Log.i("Message ID ",b.getString("id") );
+
+
+        delete_button.setOnClickListener(e->{
+
+            if(b.getBoolean("isTablet")){
+                db.delete(ChatDatabaseHelper.TABLE_NAME,ChatDatabaseHelper.KEY_ID +"="+b.getString("id"),null);
+                ChatWindow.list.clear();
+                ChatWindow.moveCursor();
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.remove(this);
+                ft.commit();
+            }
+            else{
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("sendingID",b.getString("id") );
+                getActivity().setResult(600, resultIntent);
+                getActivity().finish();}
+        });
+        return page;
+    }
+}
